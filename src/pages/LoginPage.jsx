@@ -1,9 +1,16 @@
-import React, { useState } from 'react';
-import { Container, Paper, TextField, Button, Typography, IconButton, InputAdornment, ThemeProvider } from '@mui/material';
+import { useState } from 'react';
+import {
+  Container,
+  Paper,
+  TextField,
+  Button,
+  Typography,
+  IconButton,
+  InputAdornment,
+} from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import ToastMessage from './ToastMessage';
+import ToastMessage from './ToastMessage.jsx';
 import { useNavigate } from 'react-router-dom';
-
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -14,14 +21,14 @@ const LoginPage = () => {
 
   const handleLogin = (event) => {
     event.preventDefault();
-  
-    const VITE_ADMIN_USERNAME = import.meta.env.VITE_ADMIN_USERNAME;
-    const VITE_ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
-  
+
+    const { VITE_ADMIN_USERNAME } = import.meta.env;
+    const { VITE_ADMIN_PASSWORD } = import.meta.env;
+
     if (username === VITE_ADMIN_USERNAME && password === VITE_ADMIN_PASSWORD) {
       localStorage.setItem('authToken', 'your_token_here');
       localStorage.setItem('username', username);
-  
+
       navigate('/home');
     } else {
       setToast(
@@ -29,15 +36,13 @@ const LoginPage = () => {
       );
     }
   };
-  
 
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
   return (
-    
-    <Container maxWidth='sm'>
+    <Container maxWidth="sm">
       <Paper
         elevation={2}
         style={{
@@ -47,11 +52,20 @@ const LoginPage = () => {
           marginTop: '10px',
         }}
       >
-        <Typography variant="h5" style={{ marginBottom: '30px' }} gutterBottom color={'black'}>
+        <Typography
+          variant="h5"
+          style={{ marginBottom: '30px' }}
+          gutterBottom
+          color={'black'}
+        >
           ACCOUNT LOGIN
         </Typography>
         <form onSubmit={handleLogin}>
-          <Typography variant="body1" style={{ marginBottom: '-10px' }} gutterBottom>
+          <Typography
+            variant="body1"
+            style={{ marginBottom: '-10px' }}
+            gutterBottom
+          >
             USERNAME
           </Typography>
           <TextField
@@ -63,7 +77,11 @@ const LoginPage = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <Typography variant="body1" style={{ marginBottom: '-10px' }} gutterBottom>
+          <Typography
+            variant="body1"
+            style={{ marginBottom: '-10px' }}
+            gutterBottom
+          >
             PASSWORD
           </Typography>
           <TextField
@@ -96,7 +114,6 @@ const LoginPage = () => {
       </Paper>
       {toast}
     </Container>
-   
   );
 };
 

@@ -16,8 +16,7 @@ const HomePage = () => {
     if (!authToken) {
       navigate('/');
     } else {
-    
-    dispatch(getMyData());
+      dispatch(getMyData());
     }
   }, [authToken, dispatch, navigate]);
 
@@ -47,8 +46,12 @@ const HomePage = () => {
           <p key={item.id}>{`${item.name} ${item.id}`}</p>
         ))}
       </Box>
-      
-      <Button type="button" variant="contained" color="primary" onClick={handleLogout}>
+      <Button
+        type="button"
+        variant="contained"
+        color="primary"
+        onClick={handleLogout}
+      >
         Logout
       </Button>
     </Stack>
