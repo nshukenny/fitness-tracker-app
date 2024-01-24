@@ -1,27 +1,24 @@
-import { Box, Stack, Typography, Button } from '@mui/material';
-import { Home } from '@mui/icons-material';
 import { useEffect } from 'react';
+import { Stack, Typography, Button } from '@mui/material';
+import { Home } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectMyData } from '../store/sampleFeature/selectors';
-import { getMyData } from '../store/sampleFeature/slice';
+import { handleLogout } from '../auth/authThunks';
 import { useNavigate } from 'react-router-dom';
+import { selectAuthToken } from '../auth/authSelectors';
 
 const HomePage = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const myData = useSelector(selectMyData);
-  const authToken = localStorage.getItem('authToken');
+  const navigate = useNavigate();
+  const authToken = useSelector(selectAuthToken);
 
   useEffect(() => {
     if (!authToken) {
       navigate('/');
-    } else {
-      dispatch(getMyData());
     }
-  }, [authToken, dispatch, navigate]);
+  }, [authToken, navigate]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('authToken');
+  const handleLogoutClick = async () => {
+    await dispatch(handleLogout());
     navigate('/');
   };
 
@@ -41,16 +38,11 @@ const HomePage = () => {
         HomePage
       </Typography>
 
-      <Box>
-        {myData.map((item) => (
-          <p key={item.id}>{`${item.name} ${item.id}`}</p>
-        ))}
-      </Box>
       <Button
         type="button"
         variant="contained"
         color="primary"
-        onClick={handleLogout}
+        onClick={handleLogoutClick}
       >
         Logout
       </Button>

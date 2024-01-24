@@ -1,34 +1,39 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Container,
   Paper,
   TextField,
   Button,
   Typography,
+  FormLabel,
   IconButton,
   InputAdornment,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { login } from '../auth/authThunks';
+import { selectError, selectAuthToken } from '../auth/authSelectors';
+import { clearError } from '../auth/authSlice';
 import ToastMessage from './ToastMessage.jsx';
 import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const error = useSelector(selectError);
+  const authToken = useSelector(selectAuthToken);
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [toast, setToast] = useState(null);
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
 
-    const { VITE_ADMIN_USERNAME } = import.meta.env;
-    const { VITE_ADMIN_PASSWORD } = import.meta.env;
+    await dispatch(login({ username, password }));
 
-    if (username === VITE_ADMIN_USERNAME && password === VITE_ADMIN_PASSWORD) {
-      localStorage.setItem('authToken', 'your_token_here');
-      localStorage.setItem('username', username);
-
+    if (authToken) {
       navigate('/home');
     } else {
       setToast(
@@ -40,6 +45,13 @@ const LoginPage = () => {
   const handleTogglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  useEffect(() => {
+    if (error) {
+      setToast(<ToastMessage type="error" message={error} />);
+      dispatch(clearError());
+    }
+  }, [error, dispatch]);
 
   return (
     <Container maxWidth="sm">
@@ -61,13 +73,9 @@ const LoginPage = () => {
           ACCOUNT LOGIN
         </Typography>
         <form onSubmit={handleLogin}>
-          <Typography
-            variant="body1"
-            style={{ marginBottom: '-10px' }}
-            gutterBottom
-          >
+          <FormLabel style={{ marginBottom: '-10px' }} gutterBottom>
             USERNAME
-          </Typography>
+          </FormLabel>
           <TextField
             label=""
             variant="outlined"
@@ -77,13 +85,9 @@ const LoginPage = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <Typography
-            variant="body1"
-            style={{ marginBottom: '-10px' }}
-            gutterBottom
-          >
+          <FormLabel style={{ marginBottom: '-10px' }} gutterBottom>
             PASSWORD
-          </Typography>
+          </FormLabel>
           <TextField
             label=""
             variant="outlined"
