@@ -1,11 +1,10 @@
-// store.js
 import { configureStore } from '@reduxjs/toolkit';
-import authReducer from '../auth/authSlice'; // Adjust the path accordingly
+import authReducer from './auth/Slice';
 import sampleReducer from './sampleFeature/slice';
 
 export const store = configureStore({
   reducer: {
-    auth: authReducer, // Add the authReducer to the root reducer
+    auth: authReducer,
     sampleSlice: sampleReducer,
   },
 });

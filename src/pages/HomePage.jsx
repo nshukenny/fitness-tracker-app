@@ -1,21 +1,22 @@
 import { useEffect } from 'react';
 import { Stack, Typography, Button } from '@mui/material';
 import { Home } from '@mui/icons-material';
-import { useDispatch, useSelector } from 'react-redux';
-import { handleLogout } from '../auth/authThunks';
+import { useDispatch } from 'react-redux';
+import { handleLogout } from '../store/auth/Slice';
 import { useNavigate } from 'react-router-dom';
-import { selectAuthToken } from '../auth/authSelectors';
+
+import { isLoggedIn } from '../helpers/auth';
 
 const HomePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const authToken = useSelector(selectAuthToken);
 
   useEffect(() => {
-    if (!authToken) {
+    if (!isLoggedIn()) {
+      console.log('User not logged in, redirecting...');
       navigate('/');
     }
-  }, [authToken, navigate]);
+  }, [navigate]);
 
   const handleLogoutClick = async () => {
     await dispatch(handleLogout());

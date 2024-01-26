@@ -11,9 +11,8 @@ import {
   InputAdornment,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { login } from '../auth/authThunks';
-import { selectError, selectAuthToken } from '../auth/authSelectors';
-import { clearError } from '../auth/authSlice';
+import { login, clearError } from '../store/auth/Slice.js';
+import { selectError, selectAuthToken } from '../store/auth/Selectors.js';
 import ToastMessage from './ToastMessage.jsx';
 import { useNavigate } from 'react-router-dom';
 
@@ -34,16 +33,12 @@ const LoginPage = () => {
     await dispatch(login({ username, password }));
 
     if (authToken) {
-      navigate('/home');
+      navigate('/dashboard/home');
     } else {
       setToast(
         <ToastMessage type="error" message="Invalid username or password." />
       );
     }
-  };
-
-  const handleTogglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
   };
 
   useEffect(() => {
@@ -103,7 +98,7 @@ const LoginPage = () => {
                 <InputAdornment position="end">
                   <IconButton
                     edge="end"
-                    onClick={handleTogglePasswordVisibility}
+                    onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
