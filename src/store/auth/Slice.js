@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import TokenGenerator from '../../helpers/TokenGenerator';
+import { showToast } from '../../helpers/toast';
 
 const initialState = {
   username: localStorage.getItem('username') || '',
@@ -10,19 +11,6 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setUsername: (state, action) => {
-      state.username = action.payload;
-    },
-    setError: (state, action) => {
-      state.error = action.payload;
-    },
-    clearError: (state) => {
-      state.error = null;
-    },
-    logout: (state) => {
-      state.authToken = null;
-      state.username = '';
-    },
     login: (state, action) => {
       const { username, password } = action.payload;
       const { VITE_ADMIN_USERNAME, VITE_ADMIN_PASSWORD } = import.meta.env;
@@ -35,27 +23,27 @@ const authSlice = createSlice({
         localStorage.setItem('FITNESS_TRACKER_APP_ADMIN_TOKEN', authToken);
         localStorage.setItem('username', username);
 
-        state.authToken = authToken;
         state.username = username;
-        state.error = null;
+
+        // Redirect to homepage
+        window.location.href = '/dashboard/home';
       } else {
-        state.error = 'Invalid username or password.';
+        showToast({
+          message: 'Invalid username or password.',
+          title: `Login - Error:`,
+          type: 'error',
+        });
       }
     },
     handleLogout(state) {
       localStorage.removeItem('FITNESS_TRACKER_APP_ADMIN_TOKEN');
-      state.authToken = null;
       state.username = null;
+
+      // Redirect to login
+      window.location.href = '/';
     },
   },
 });
 
-export const {
-  setUsername,
-  setError,
-  clearError,
-  logout,
-  login,
-  handleLogout,
-} = authSlice.actions;
+export const { setUsername, logout, login, handleLogout } = authSlice.actions;
 export default authSlice.reducer;

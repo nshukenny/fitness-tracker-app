@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   Container,
   Paper,
@@ -11,42 +11,22 @@ import {
   InputAdornment,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { login, clearError } from '../store/auth/Slice.js';
-import { selectError, selectAuthToken } from '../store/auth/Selectors.js';
-import ToastMessage from './ToastMessage.jsx';
-import { useNavigate } from 'react-router-dom';
+import { login } from '../store/auth/slice.js';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const error = useSelector(selectError);
-  const authToken = useSelector(selectAuthToken);
+  // const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [toast, setToast] = useState(null);
 
-  const handleLogin = async (event) => {
+  const handleLogin = (event) => {
     event.preventDefault();
 
-    await dispatch(login({ username, password }));
-
-    if (authToken) {
-      navigate('/dashboard/home');
-    } else {
-      setToast(
-        <ToastMessage type="error" message="Invalid username or password." />
-      );
-    }
+    console.log('hello');
+    dispatch(login({ username, password }));
   };
-
-  useEffect(() => {
-    if (error) {
-      setToast(<ToastMessage type="error" message={error} />);
-      dispatch(clearError());
-    }
-  }, [error, dispatch]);
 
   return (
     <Container maxWidth="sm">
@@ -62,15 +42,12 @@ const LoginPage = () => {
         <Typography
           variant="h5"
           style={{ marginBottom: '30px' }}
-          gutterBottom
           color={'black'}
         >
           ACCOUNT LOGIN
         </Typography>
         <form onSubmit={handleLogin}>
-          <FormLabel style={{ marginBottom: '-10px' }} gutterBottom>
-            USERNAME
-          </FormLabel>
+          <FormLabel style={{ marginBottom: '-10px' }}>USERNAME</FormLabel>
           <TextField
             label=""
             variant="outlined"
@@ -80,9 +57,7 @@ const LoginPage = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <FormLabel style={{ marginBottom: '-10px' }} gutterBottom>
-            PASSWORD
-          </FormLabel>
+          <FormLabel style={{ marginBottom: '-10px' }}>PASSWORD</FormLabel>
           <TextField
             label=""
             variant="outlined"
@@ -111,7 +86,6 @@ const LoginPage = () => {
           </Button>
         </form>
       </Paper>
-      {toast}
     </Container>
   );
 };
