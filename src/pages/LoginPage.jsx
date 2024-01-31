@@ -11,7 +11,7 @@ import {
   InputAdornment,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { login } from '../store/auth/slice';
+import { login } from '../store/auth/Slice';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
