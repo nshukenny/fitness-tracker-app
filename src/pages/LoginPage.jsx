@@ -11,7 +11,7 @@ import {
   InputAdornment,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { login } from '../store/auth/slice.js';
+import { login } from '../store/auth/Slice';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -29,7 +29,15 @@ const LoginPage = () => {
   };
 
   return (
-    <Container maxWidth="sm">
+    <Container
+      maxWidth="sm"
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+      }}
+    >
       <Paper
         elevation={2}
         style={{
