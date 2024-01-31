@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Stack, Typography, Button } from '@mui/material';
 import { Home } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
-import { handleLogout } from '../store/auth/Slice';
+import { handleLogout } from '../store/auth/slice';
 import { useNavigate } from 'react-router-dom';
 
 import { isLoggedIn } from '../helpers/auth';
