@@ -1,0 +1,10 @@
+{
+    "users": [
+      { "id": "1", "name": "NSHUTI Kenny Herve", "age": 23 , "weight": 65 , "height": 1.80 , "location": "Kigali" , "phone":"+250784667709"  , "email": "nshukenny@gmail.com" },
+      { "id": "2", "name": "Ruzindana Kenny", "age": 23 , "weight": 75 , "height": 1.83 , "location": "Kigali" , "phone":"+250788667700"  , "email": "kennylazer@gmail.com" }
+    ],
+    "workouts": [
+      { "id": "1", "text": "a comment about post 1", "postId": "1" },
+      { "id": "2", "text": "another comment about post 1", "postId": "1" }
+    ]
+  }
