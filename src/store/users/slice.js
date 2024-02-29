@@ -1,38 +1,33 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import API from '../../api/api';
-
-export const getUsers = createAsyncThunk(
-  'users/getUsers',
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await API.get(`/users`);
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response.data);
-    }
-  }
-);
+import { createSlice } from '@reduxjs/toolkit';
+import { getUsers } from './thunks';
 
 const usersSlice = createSlice({
   name: 'users',
   initialState: {
-    users: [],
-    status: 'idle',
-    error: null,
+    allUsers: {
+      data: [],
+      status: 'idle',
+    },
   },
   reducers: {},
-  extraReducers: {
-    [getUsers.pending]: (state) => {
-      state.status = 'loading';
-    },
-    [getUsers.fulfilled]: (state, action) => {
-      state.status = 'succeeded';
-      state.users = action.payload;
-    },
-    [getUsers.rejected]: (state, action) => {
-      state.status = 'failed';
-      state.error = action.payload;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getUsers.pending, (state) => {
+        state.allUsers = {
+          data: [],
+          status: 'loading',
+        };
+      })
+      .addCase(getUsers.fulfilled, (state, action) => {
+        console.log('action', action);
+        state.allUsers = {
+          data: action.payload,
+          status: 'success',
+        };
+      })
+      .addCase(getUsers.rejected, (state) => {
+        state.allUsers.status = 'error';
+      });
   },
 });
 

@@ -19,11 +19,12 @@ import {
   MenuItem,
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { getUsers } from '../store/users/slice';
+import { getUsers } from '../../store/users/thunks';
+import { selectAllUsers } from '../../store/users/selectors';
 
-const Tables = () => {
+const UsersPage = () => {
   const dispatch = useDispatch();
-  const users = useSelector((state) => state.users);
+  const users = useSelector(selectAllUsers).data;
 
   useEffect(() => {
     dispatch(getUsers());
@@ -39,6 +40,7 @@ const Tables = () => {
     setAnchorEl(null);
   };
 
+  console.log('USERS', users);
   return (
     <>
       <Container className="mt--7" maxWidth="lg">
@@ -62,30 +64,43 @@ const Tables = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {users.map((user) => (
-                        <TableRow key={user.id}>
-                          <TableCell>{user.id}</TableCell>
-                          <TableCell>{user.name}</TableCell>
-                          <TableCell>{user.age}</TableCell>
-                          <TableCell>{user.weight}</TableCell>
-                          <TableCell>{user.height}</TableCell>
-                          <TableCell>{user.phone}</TableCell>
-                          <TableCell>{user.email}</TableCell>
-                          <TableCell>
-                            <IconButton onClick={handleClick}>
-                              <MoreVertIcon />
-                            </IconButton>
-                            <Menu
-                              anchorEl={anchorEl}
-                              open={Boolean(anchorEl)}
-                              onClose={handleClose}
-                            >
-                              <MenuItem onClick={handleClose}>Edit</MenuItem>
-                              <MenuItem onClick={handleClose}>Delete</MenuItem>
-                            </Menu>
+                      {!users || !users.length ? (
+                        <TableRow>
+                          <TableCell
+                            colSpan={8}
+                            sx={{ textAlign: 'center', fontWeight: 'bold' }}
+                          >
+                            No users found!
                           </TableCell>
                         </TableRow>
-                      ))}
+                      ) : (
+                        users.map((user) => (
+                          <TableRow key={user.id}>
+                            <TableCell>{user.id}</TableCell>
+                            <TableCell>{user.name}</TableCell>
+                            <TableCell>{user.age}</TableCell>
+                            <TableCell>{user.weight}</TableCell>
+                            <TableCell>{user.height}</TableCell>
+                            <TableCell>{user.phone}</TableCell>
+                            <TableCell>{user.email}</TableCell>
+                            <TableCell>
+                              <IconButton onClick={handleClick}>
+                                <MoreVertIcon />
+                              </IconButton>
+                              <Menu
+                                anchorEl={anchorEl}
+                                open={Boolean(anchorEl)}
+                                onClose={handleClose}
+                              >
+                                <MenuItem onClick={handleClose}>Edit</MenuItem>
+                                <MenuItem onClick={handleClose}>
+                                  Delete
+                                </MenuItem>
+                              </Menu>
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      )}
                     </TableBody>
                   </Table>
                 </TableContainer>
@@ -107,4 +122,4 @@ const Tables = () => {
   );
 };
 
-export default Tables;
+export default UsersPage;
