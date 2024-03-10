@@ -40,7 +40,7 @@ export default function Sidebar() {
                   sx={{
                     width: '100%',
                     '&:hover': {
-                      backgroundColor: '#f0f0f0', // Change background color on hover
+                      backgroundColor: '#f0f0f0',
                     },
                   }}
                 >
@@ -73,7 +73,7 @@ export default function Sidebar() {
     <div>
       <Drawer
         anchor="left"
-        open={true} // Always open
+        open={true}
         variant="persistent"
         sx={{
           '& .MuiDrawer-paper': {

@@ -1,125 +1,21 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  Container,
-  Grid,
-  Card,
-  CardHeader,
-  CardContent,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Pagination,
-  IconButton,
-  Menu,
-  MenuItem,
-} from '@mui/material';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { getUsers } from '../../store/users/thunks';
-import { selectAllUsers } from '../../store/users/selectors';
+import Box from '@mui/material/Box';
+import AdminNavbar from '../../components/Navbars/AdminNavbar.jsx';
+//import Header from '../../components/Headers/Header.jsx';
+import Sidebar from '../../components/Sidebar/Sidebar.jsx';
+import UserTable from './UsersTable.jsx';
 
 const UsersPage = () => {
-  const dispatch = useDispatch();
-  const users = useSelector(selectAllUsers).data;
-
-  useEffect(() => {
-    dispatch(getUsers());
-  }, [dispatch]);
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  console.log('USERS', users);
   return (
-    <>
-      <Container className="mt--7" maxWidth="lg">
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Card>
-              <CardHeader title="Card tables" />
-              <CardContent>
-                <TableContainer component={Paper}>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell>ID</TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Age</TableCell>
-                        <TableCell>Weight</TableCell>
-                        <TableCell>Height</TableCell>
-                        <TableCell>Phone</TableCell>
-                        <TableCell>Email</TableCell>
-                        <TableCell></TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {!users || !users.length ? (
-                        <TableRow>
-                          <TableCell
-                            colSpan={8}
-                            sx={{ textAlign: 'center', fontWeight: 'bold' }}
-                          >
-                            No users found!
-                          </TableCell>
-                        </TableRow>
-                      ) : (
-                        users.map((user) => (
-                          <TableRow key={user.id}>
-                            <TableCell>{user.id}</TableCell>
-                            <TableCell>{user.name}</TableCell>
-                            <TableCell>{user.age}</TableCell>
-                            <TableCell>{user.weight}</TableCell>
-                            <TableCell>{user.height}</TableCell>
-                            <TableCell>{user.phone}</TableCell>
-                            <TableCell>{user.email}</TableCell>
-                            <TableCell>
-                              <IconButton onClick={handleClick}>
-                                <MoreVertIcon />
-                              </IconButton>
-                              <Menu
-                                anchorEl={anchorEl}
-                                open={Boolean(anchorEl)}
-                                onClose={handleClose}
-                              >
-                                <MenuItem onClick={handleClose}>Edit</MenuItem>
-                                <MenuItem onClick={handleClose}>
-                                  Delete
-                                </MenuItem>
-                              </Menu>
-                            </TableCell>
-                          </TableRow>
-                        ))
-                      )}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </CardContent>
-              <CardContent>
-                <Pagination
-                  count={3}
-                  shape="rounded"
-                  size="large"
-                  siblingCount={1}
-                  boundaryCount={1}
-                />
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-      </Container>
-    </>
+    <Box>
+      <Sidebar style={{ width: '250px' }} />
+      <Box style={{ marginLeft: '220px' }}>
+        <AdminNavbar />
+        {/* <Header /> */}
+        <Box style={{ marginTop: '20px' }}>
+          <UserTable />
+        </Box>
+      </Box>
+    </Box>
   );
 };
-
 export default UsersPage;

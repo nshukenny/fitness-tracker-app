@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
+import Box from '@mui/material/Box';
 import { Stack, Typography, Button } from '@mui/material';
 import { Home } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { handleLogout } from '../store/auth/Slice';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../components/Sidebar/Sidebar.jsx'; // Import the sidebar component
+import Sidebar from '../components/Sidebar/Sidebar.jsx';
 import { isLoggedIn } from '../helpers/auth';
 import AdminNavbar from '../components/Navbars/AdminNavbar.jsx';
 
@@ -24,9 +25,9 @@ const HomePage = () => {
   };
 
   return (
-    <div>
+    <Box>
       <Sidebar />
-      <div style={{ marginLeft: '220px' }}>
+      <Box style={{ marginLeft: '220px' }}>
         {' '}
         <AdminNavbar />
         <Stack alignItems="center" gap={4} p={3}>
@@ -53,8 +54,8 @@ const HomePage = () => {
             Logout
           </Button>
         </Stack>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 
