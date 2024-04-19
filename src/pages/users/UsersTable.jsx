@@ -40,6 +40,8 @@ const UsersTable = () => {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openAddModal, setOpenAddModal] = useState(false);
   const [selectedUserData, setSelectedUserData] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   const handleClick = (event, userId) => {
     setAnchorEl(event.currentTarget);
@@ -53,9 +55,8 @@ const UsersTable = () => {
     setOpenAddModal(false);
   };
 
-  const handleDeleteClick = (event, userId) => {
+  const handleDeleteClick = () => {
     setAnchorEl(null);
-    setSelectedUserId(userId);
     setOpenDeleteConfirmation(true);
   };
 
@@ -74,14 +75,19 @@ const UsersTable = () => {
   };
 
   const handleDeleteConfirmation = () => {
-    dispatch(deleteUser(selectedUserId));
-    setOpenDeleteConfirmation(false);
-    showToast({
-      message: 'Delete Successfully.',
-      title: `user:`,
-      type: 'success',
-    });
-    window.location.reload();
+    try {
+      dispatch(deleteUser(selectedUserId));
+
+      showToast({
+        message: 'Delete Successfully.',
+        title: `user:`,
+        type: 'success',
+      });
+      setOpenDeleteConfirmation(false);
+      dispatch(getUsers());
+    } catch (error) {
+      console.error('Error adding user:', error);
+    }
   };
   const handleAddUser = async (userData) => {
     try {
@@ -94,12 +100,20 @@ const UsersTable = () => {
         title: 'User',
         type: 'success',
       });
-      window.location.reload();
       setOpenAddModal(false);
+      dispatch(getUsers());
     } catch (error) {
       console.error('Error adding user:', error);
     }
   };
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = users.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <>
@@ -135,7 +149,7 @@ const UsersTable = () => {
                       </TableRow>
                     </TableHead>
                     <UsersTableBody
-                      users={users}
+                      users={currentItems}
                       statuss={statuss}
                       handleClick={handleClick}
                       handleEditClick={handleEditClick}
@@ -148,11 +162,14 @@ const UsersTable = () => {
               </CardContent>
               <CardContent>
                 <Pagination
-                  count={3}
+                  count={Math.ceil(users.length / itemsPerPage)}
+                  page={currentPage}
+                  onChange={handlePageChange}
                   shape="rounded"
                   size="large"
                   siblingCount={1}
                   boundaryCount={1}
+                  disabled={users.length <= itemsPerPage}
                 />
               </CardContent>
             </Card>

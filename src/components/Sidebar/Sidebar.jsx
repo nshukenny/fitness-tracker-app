@@ -14,7 +14,7 @@ export default function Sidebar() {
   const list = (
     <Box
       sx={{
-        width: 250,
+        width: 200,
         paddingTop: 20,
       }}
       role="presentation"

@@ -10,33 +10,19 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 
 import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import SearchIcon from '@mui/icons-material/Search';
 import TextField from '@mui/material/TextField';
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
 function AdminNavbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
   };
 
   return (
@@ -117,10 +103,7 @@ function AdminNavbar() {
           </Box>
 
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Tooltip
-              title="Kenny Herve & Settings"
-              onClick={handleOpenUserMenu}
-            >
+            <Tooltip title="Kenny Herve & Settings">
               <Box
                 sx={{
                   display: 'flex',
@@ -136,36 +119,6 @@ function AdminNavbar() {
                 </Typography>
               </Box>
             </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  {setting === 'Profile' && (
-                    <AccountCircleIcon sx={{ mr: 1 }} />
-                  )}
-                  {setting === 'Account' && (
-                    <AccountCircleIcon sx={{ mr: 1 }} />
-                  )}
-                  {setting === 'Dashboard' && <DashboardIcon sx={{ mr: 1 }} />}
-                  {setting === 'Logout' && <ExitToAppIcon sx={{ mr: 1 }} />}
-                  <Typography>{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
           </Box>
         </Toolbar>
       </Container>

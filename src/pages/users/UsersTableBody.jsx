@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import {
   TableBody,
   TableRow,
@@ -18,6 +19,7 @@ const UsersTableBody = ({
   handleClose,
   handleEditClick,
 }) => {
+  const [clickedUserId, setClickedUserId] = useState(null);
   return (
     <TableBody>
       {statuss === 'loading' ? (
@@ -58,7 +60,12 @@ const UsersTableBody = ({
             <TableCell>{user.phone}</TableCell>
             <TableCell>{user.email}</TableCell>
             <TableCell>
-              <IconButton onClick={(event) => handleClick(event, user.id)}>
+              <IconButton
+                onClick={(event) => {
+                  handleClick(event, user.id);
+                  setClickedUserId(user.id); // Store the clicked user ID
+                }}
+              >
                 <MoreVertIcon />
               </IconButton>
               <Menu
@@ -66,12 +73,12 @@ const UsersTableBody = ({
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={(event) => handleEditClick(event, user.id)}>
+                <MenuItem
+                  onClick={(event) => handleEditClick(event, clickedUserId)}
+                >
                   Edit
                 </MenuItem>
-                <MenuItem
-                  onClick={(event) => handleDeleteClick(event, user.id)}
-                >
+                <MenuItem onClick={(event) => handleDeleteClick(event)}>
                   Delete
                 </MenuItem>
               </Menu>
