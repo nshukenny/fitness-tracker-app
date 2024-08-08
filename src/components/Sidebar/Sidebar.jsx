@@ -20,7 +20,7 @@ export default function Sidebar() {
       role="presentation"
     >
       <List>
-        {['Dashboard', 'User Profile', 'Work Sessions'].map((text, index) => (
+        {['Dashboard', 'Users', 'Work Sessions'].map((text, index) => (
           <ListItem
             key={text}
             disablePadding

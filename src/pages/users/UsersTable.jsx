@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Container,
@@ -13,6 +13,7 @@ import {
   TableContainer,
   Paper,
   Pagination,
+  TextField,
 } from '@mui/material';
 import { getUsers, deleteUser, createUser } from '../../store/users/thunks';
 import { selectAllUsers } from '../../store/users/selectors';
@@ -26,35 +27,31 @@ const UsersTable = () => {
   const dispatch = useDispatch();
   const usersData = useSelector(selectAllUsers);
   const users = usersData.data;
-  const statuss = usersData.status;
+  const { status } = usersData;
 
   useEffect(() => {
-    if (statuss === 'idle') {
+    if (status === 'idle') {
       dispatch(getUsers());
     }
-  }, [dispatch, statuss]);
+  }, [dispatch, status]);
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openAddModal, setOpenAddModal] = useState(false);
   const [selectedUserData, setSelectedUserData] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 5;
 
   const handleClick = (event, userId) => {
     setAnchorEl(event.currentTarget);
     setSelectedUserId(userId);
   };
-  const handleOpenAddModal = () => {
-    setOpenAddModal(true);
-  };
 
-  const handleCloseAddModal = () => {
-    setOpenAddModal(false);
-  };
-
+  const handleOpenAddModal = () => setOpenAddModal(true);
+  const handleCloseAddModal = () => setOpenAddModal(false);
   const handleDeleteClick = () => {
     setAnchorEl(null);
     setOpenDeleteConfirmation(true);
@@ -74,25 +71,25 @@ const UsersTable = () => {
     setOpenEditModal(false);
   };
 
-  const handleDeleteConfirmation = () => {
+  const handleDeleteConfirmation = async () => {
     try {
-      dispatch(deleteUser(selectedUserId));
-
+      await dispatch(deleteUser(selectedUserId));
       showToast({
-        message: 'Delete Successfully.',
-        title: `user:`,
+        message: 'Deleted successfully.',
+        title: 'User',
         type: 'success',
       });
       setOpenDeleteConfirmation(false);
       dispatch(getUsers());
     } catch (error) {
-      console.error('Error adding user:', error);
+      console.error('Error deleting user:', error);
     }
   };
+
   const handleAddUser = async (userData) => {
     try {
       const maxId = Math.max(...users.map((user) => user.id));
-      const newUserId = maxId + 1;
+      const newUserId = (maxId + 1).toString();
       userData.id = newUserId;
       await dispatch(createUser(userData));
       showToast({
@@ -107,13 +104,20 @@ const UsersTable = () => {
     }
   };
 
-  const handlePageChange = (event, value) => {
-    setCurrentPage(value);
-  };
+  const handlePageChange = (event, value) => setCurrentPage(value);
+  const handleSearchChange = (event) => setSearchQuery(event.target.value);
+
+  const filteredUsers = useMemo(() => {
+    return users.filter((user) =>
+      Object.values(user).some((value) =>
+        value.toString().toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    );
+  }, [users, searchQuery]);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = users.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
 
   return (
     <>
@@ -134,6 +138,14 @@ const UsersTable = () => {
                 }
               />
               <CardContent>
+                <TextField
+                  label="Search"
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                />
                 <TableContainer component={Paper}>
                   <table style={{ width: '100%' }}>
                     <TableHead>
@@ -150,7 +162,7 @@ const UsersTable = () => {
                     </TableHead>
                     <UsersTableBody
                       users={currentItems}
-                      statuss={statuss}
+                      status={status}
                       handleClick={handleClick}
                       handleEditClick={handleEditClick}
                       handleDeleteClick={handleDeleteClick}
@@ -162,14 +174,14 @@ const UsersTable = () => {
               </CardContent>
               <CardContent>
                 <Pagination
-                  count={Math.ceil(users.length / itemsPerPage)}
+                  count={Math.ceil(filteredUsers.length / itemsPerPage)}
                   page={currentPage}
                   onChange={handlePageChange}
                   shape="rounded"
                   size="large"
                   siblingCount={1}
                   boundaryCount={1}
-                  disabled={users.length <= itemsPerPage}
+                  disabled={filteredUsers.length <= itemsPerPage}
                 />
               </CardContent>
             </Card>
@@ -182,11 +194,9 @@ const UsersTable = () => {
         onConfirm={handleDeleteConfirmation}
       />
       <EditModal
-        EditModal
         open={openEditModal}
         onClose={() => setOpenEditModal(false)}
         userId={selectedUserId}
-        selectedUserId={selectedUserId}
         userData={selectedUserData}
       />
       <AddModal

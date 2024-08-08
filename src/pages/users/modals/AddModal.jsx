@@ -23,6 +23,7 @@ const AddModal = ({ open, onClose, onAddUser }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(registerSchema),
@@ -30,6 +31,7 @@ const AddModal = ({ open, onClose, onAddUser }) => {
   const formSubmitHandler = (data) => {
     if (isValid) {
       onAddUser(data);
+      reset();
     }
   };
 
