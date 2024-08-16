@@ -162,7 +162,7 @@ const UsersTable = () => {
                     </TableHead>
                     <UsersTableBody
                       users={currentItems}
-                      status={status}
+                      statuss={status}
                       handleClick={handleClick}
                       handleEditClick={handleEditClick}
                       handleDeleteClick={handleDeleteClick}

@@ -14,38 +14,20 @@
       "id": "2",
       "phone": "0784667709",
       "height": 66,
-      "weight": 66,
+      "weight": 67,
       "age": 68,
       "email": "kwimenyi@gmail.com",
       "name": "Charles Hategekimana",
       "location": "Kigali"
     },
     {
-      "id": "4",
-      "phone": "0784667709",
-      "height": 65,
-      "weight": 66,
-      "age": 34,
-      "email": "kevin@gmail.com",
-      "name": "Mr. Samson Kipkosgei Cheruiyot"
-    },
-    {
       "id": "5",
       "phone": "0784667709",
-      "height": 77,
-      "weight": 77,
-      "age": 77,
+      "height": 55,
+      "weight": 55,
+      "age": 55,
       "email": "kwizera@gmail.com",
-      "name": "Charles Hategekimana"
-    },
-    {
-      "id": "6",
-      "phone": "0784667709",
-      "height": 77,
-      "weight": 77,
-      "age": 77,
-      "email": "kenny@gmail.com",
-      "name": "Information Technology"
+      "name": "NSHUTI Kenny Herve"
     }
   ],
   "workouts": [

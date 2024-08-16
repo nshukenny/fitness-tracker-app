@@ -27,7 +27,7 @@ export default function Sidebar() {
             sx={{ marginTop: index === 0 ? 0 : 0 }}
           >
             {' '}
-            {text === 'User Profile' ? (
+            {text === 'Users' ? (
               <Link
                 to="/dashboard/users"
                 style={{
