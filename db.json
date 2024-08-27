@@ -1,0 +1,45 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "NSHUTI Kenny Herve",
+      "age": 25,
+      "weight": 65,
+      "height": 50,
+      "location": "Kigali",
+      "phone": "0784667709",
+      "email": "nshukenny@gmail.com"
+    },
+    {
+      "id": "2",
+      "phone": "0784667709",
+      "height": 66,
+      "weight": 67,
+      "age": 68,
+      "email": "kwimenyi@gmail.com",
+      "name": "Charles Hategekimana",
+      "location": "Kigali"
+    },
+    {
+      "id": "5",
+      "phone": "0784667709",
+      "height": 55,
+      "weight": 55,
+      "age": 55,
+      "email": "kwizera@gmail.com",
+      "name": "NSHUTI Kenny Herve"
+    }
+  ],
+  "workouts": [
+    {
+      "id": "1",
+      "text": "a comment about post 1",
+      "postId": "1"
+    },
+    {
+      "id": "2",
+      "text": "another comment about post 1",
+      "postId": "1"
+    }
+  ]
+}
