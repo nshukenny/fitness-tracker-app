@@ -32,14 +32,23 @@
   ],
   "workouts": [
     {
-      "id": "1",
-      "text": "a comment about post 1",
-      "postId": "1"
+      "ID": "1",
+      "Name": "Morning Run",
+      "Type": "Cardio",
+      "Duration": 45,
+      "Calories Burned": 350,
+      "User ID": "1",
+      "Date Performed": "2024-09-05T07:30:00Z"
     },
     {
-      "id": "2",
-      "text": "another comment about post 1",
-      "postId": "1"
+      "ID": "2",
+      "Name": "Yoga Session",
+      "Type": "Flexibility",
+      "Duration": 60,
+      "Calories Burned": 200,
+      "User ID": "2",
+      "Date Performed": "2024-09-05T08:00:00Z"
     }
   ]
+  
 }
