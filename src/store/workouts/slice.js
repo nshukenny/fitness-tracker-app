@@ -1,5 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { deleteWorkout, createWorkout, updateWorkout } from './thunks';
+import {
+  deleteWorkout,
+  createWorkout,
+  updateWorkout,
+  getWorkouts,
+} from './thunks';
 
 const workoutsSlice = createSlice({
   name: 'workouts',
