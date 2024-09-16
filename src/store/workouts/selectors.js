@@ -1,2 +1,3 @@
-export const selectAllUsers = (state) => state.userSlice.allUsers;
-export const selectUsersStatus = (state) => state.userSlice.UsersStatus;
+export const selectAllWorkouts = (state) => state.workoutSlice.allWorkouts;
+export const selectWorkoutsStatus = (state) =>
+  state.workoutSlice.workoutsStatus;

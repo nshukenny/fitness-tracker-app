@@ -15,39 +15,50 @@ import {
   Pagination,
   TextField,
 } from '@mui/material';
-import { getUsers, deleteUser, createUser } from '../../store/users/thunks.js';
+import {
+  getWorkouts,
+  deleteWorkout,
+  createWorkout,
+} from '../../store/workouts/thunks.js';
+import { getUsers } from '../../store/users/thunks.js';
+import { selectAllWorkouts } from '../../store/workouts/selectors.js';
 import { selectAllUsers } from '../../store/users/selectors.js';
 import ConfirmationModal from './modals/ConfirmationModal.jsx';
 import EditModal from './modals/EditModal.jsx';
 import AddModal from './modals/AddModal.jsx';
-import UsersTableBody from './UsersTableBody.jsx';
+import WorkoutsTableBody from './WorkoutsTableBody.jsx';
 import { showToast } from '../../helpers/toast.js';
 
-const UsersTable = () => {
+const WorkoutsTable = () => {
   const dispatch = useDispatch();
+  const workoutsData = useSelector(selectAllWorkouts);
   const usersData = useSelector(selectAllUsers);
+  const workouts = workoutsData.data;
   const users = usersData.data;
-  const { status } = usersData;
+  const { status } = workoutsData;
+
+  const workoutTypes = ['Cardio', 'Strength', 'Flexibility', 'Balance'];
 
   useEffect(() => {
     if (status === 'idle') {
+      dispatch(getWorkouts());
       dispatch(getUsers());
     }
   }, [dispatch, status]);
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [selectedWorkoutId, setSelectedWorkoutId] = useState(null);
   const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openAddModal, setOpenAddModal] = useState(false);
-  const [selectedUserData, setSelectedUserData] = useState(null);
+  const [selectedWorkoutData, setSelectedWorkoutData] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const itemsPerPage = 5;
 
-  const handleClick = (event, userId) => {
+  const handleClick = (event, workoutId) => {
     setAnchorEl(event.currentTarget);
-    setSelectedUserId(userId);
+    setSelectedWorkoutId(workoutId);
   };
 
   const handleOpenAddModal = () => setOpenAddModal(true);
@@ -57,12 +68,12 @@ const UsersTable = () => {
     setOpenDeleteConfirmation(true);
   };
 
-  const handleEditClick = (event, userId) => {
+  const handleEditClick = (event, workoutId) => {
     setAnchorEl(null);
-    setSelectedUserId(userId);
+    setSelectedWorkoutId(workoutId);
     setOpenEditModal(true);
-    const userData = users.find((user) => user.id === userId);
-    setSelectedUserData(userData);
+    const workoutData = workouts.find((workout) => workout.id === workoutId);
+    setSelectedWorkoutData(workoutData);
   };
 
   const handleClose = () => {
@@ -73,51 +84,66 @@ const UsersTable = () => {
 
   const handleDeleteConfirmation = async () => {
     try {
-      await dispatch(deleteUser(selectedUserId));
+      await dispatch(deleteWorkout(selectedWorkoutId));
       showToast({
         message: 'Deleted successfully.',
-        title: 'User',
+        title: 'Workout',
         type: 'success',
       });
       setOpenDeleteConfirmation(false);
-      dispatch(getUsers());
+      dispatch(getWorkouts());
     } catch (error) {
-      console.error('Error deleting user:', error);
+      console.error('Error deleting workout:', error);
     }
   };
 
-  const handleAddUser = async (userData) => {
+  const handleAddWorkout = async (workoutData) => {
     try {
-      const maxId = Math.max(...users.map((user) => user.id));
-      const newUserId = (maxId + 1).toString();
-      userData.id = newUserId;
-      await dispatch(createUser(userData));
+      const maxId = Math.max(...workouts.map((workout) => workout.id));
+      const newWorkoutId = (maxId + 1).toString();
+      workoutData.id = newWorkoutId;
+      const user = users.find((user) => user.phone === workoutData.phone);
+      if (user) {
+        workoutData.UserId = {
+          id: user.id,
+          phone: user.phone,
+          name: user.name,
+        };
+      } else {
+        throw new Error('User not found');
+      }
+      delete workoutData.phone;
+      delete workoutData.name;
+      await dispatch(createWorkout(workoutData));
       showToast({
-        message: 'User added successfully.',
-        title: 'User',
+        message: 'Workout added successfully.',
+        title: 'Workout',
         type: 'success',
       });
       setOpenAddModal(false);
-      dispatch(getUsers());
+      dispatch(getWorkouts());
     } catch (error) {
-      console.error('Error adding user:', error);
+      console.error('Error adding workout:', error);
     }
   };
 
   const handlePageChange = (event, value) => setCurrentPage(value);
   const handleSearchChange = (event) => setSearchQuery(event.target.value);
 
-  const filteredUsers = useMemo(() => {
-    return users.filter((user) =>
-      Object.values(user).some((value) =>
+  const filteredWorkouts = useMemo(() => {
+    return workouts.filter((workout) =>
+      Object.values(workout).some((value) =>
         value.toString().toLowerCase().includes(searchQuery.toLowerCase())
       )
     );
-  }, [users, searchQuery]);
+  }, [workouts, searchQuery]);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredWorkouts.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
 
   return (
     <>
@@ -126,14 +152,14 @@ const UsersTable = () => {
           <Grid item xs={12}>
             <Card>
               <CardHeader
-                title="USERS"
+                title="WORKOUTS"
                 action={
                   <Button
                     variant="contained"
                     onClick={handleOpenAddModal}
                     style={{ marginRight: '9px' }}
                   >
-                    Add User
+                    Add Workout
                   </Button>
                 }
               />
@@ -151,17 +177,17 @@ const UsersTable = () => {
                     <TableHead>
                       <TableRow>
                         <TableCell>ID</TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Age</TableCell>
-                        <TableCell>Weight</TableCell>
-                        <TableCell>Height</TableCell>
-                        <TableCell>Phone</TableCell>
-                        <TableCell>Email</TableCell>
-                        <TableCell></TableCell>
+                        <TableCell>User Name</TableCell>
+                        <TableCell>User phone</TableCell>
+                        <TableCell>Type</TableCell>
+                        <TableCell>Duration</TableCell>
+                        <TableCell>Calories Burned</TableCell>
+                        <TableCell>Date Performed</TableCell>
                       </TableRow>
                     </TableHead>
-                    <UsersTableBody
-                      users={currentItems}
+                    <WorkoutsTableBody
+                      workouts={currentItems}
+                      users={users} // Pass users list
                       statuss={status}
                       handleClick={handleClick}
                       handleEditClick={handleEditClick}
@@ -174,14 +200,14 @@ const UsersTable = () => {
               </CardContent>
               <CardContent>
                 <Pagination
-                  count={Math.ceil(filteredUsers.length / itemsPerPage)}
+                  count={Math.ceil(filteredWorkouts.length / itemsPerPage)}
                   page={currentPage}
                   onChange={handlePageChange}
                   shape="rounded"
                   size="large"
                   siblingCount={1}
                   boundaryCount={1}
-                  disabled={filteredUsers.length <= itemsPerPage}
+                  disabled={filteredWorkouts.length <= itemsPerPage}
                 />
               </CardContent>
             </Card>
@@ -196,16 +222,19 @@ const UsersTable = () => {
       <EditModal
         open={openEditModal}
         onClose={() => setOpenEditModal(false)}
-        userId={selectedUserId}
-        userData={selectedUserData}
+        workoutData={selectedWorkoutData}
+        workoutTypes={workoutTypes} // Pass workout types
+        users={users} // Pass users
       />
       <AddModal
         open={openAddModal}
         onClose={handleCloseAddModal}
-        onAddUser={handleAddUser}
+        onAddWorkout={handleAddWorkout}
+        users={users} // Pass the users to the AddModal
+        workoutTypes={workoutTypes} // Pass the workout types to the AddModal
       />
     </>
   );
 };
 
-export default UsersTable;
+export default WorkoutsTable;

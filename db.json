@@ -12,7 +12,7 @@
     },
     {
       "id": "2",
-      "phone": "0784667709",
+      "phone": "0784667700",
       "height": 66,
       "weight": 67,
       "age": 68,
@@ -22,33 +22,86 @@
     },
     {
       "id": "5",
-      "phone": "0784667709",
+      "phone": "0784667701",
       "height": 55,
       "weight": 55,
       "age": 55,
       "email": "kwizera@gmail.com",
-      "name": "NSHUTI Kenny Herve"
+      "name": "RUZINDANA Kenny"
     }
   ],
   "workouts": [
     {
-      "ID": "1",
-      "Name": "Morning Run",
+      "id": "1",
       "Type": "Cardio",
       "Duration": 45,
-      "Calories Burned": 350,
-      "User ID": "1",
-      "Date Performed": "2024-09-05T07:30:00Z"
+      "CaloriesBurned": 350,
+      "UserId": {
+        "id": "1",
+        "phone": "0784667709",
+        "name": "NSHUTI Kenny Herve"
+      },
+      "DatePerformed": "2024-09-05T07:30:00Z"
     },
     {
-      "ID": "2",
-      "Name": "Yoga Session",
-      "Type": "Flexibility",
-      "Duration": 60,
-      "Calories Burned": 200,
-      "User ID": "2",
-      "Date Performed": "2024-09-05T08:00:00Z"
+      "id": "2",
+      "CaloriesBurned": 8,
+      "Duration": 8,
+      "Type": "Strength",
+      "DatePerformed": "2024-09-16T10:55:35.375Z",
+      "UserId": {
+        "id": "5",
+        "phone": "0784667701",
+        "name": "RUZINDANA Kenny"
+      }
+    },
+    {
+      "id": "3",
+      "Type": "Cardio",
+      "Duration": 45,
+      "CaloriesBurned": 350,
+      "UserId": {
+        "id": "1",
+        "name": "NSHUTI Kenny Herve",
+        "phone": "0784667709"
+      },
+      "DatePerformed": "2024-09-05T07:30:00Z"
+    },
+    {
+      "id": "4",
+      "CaloriesBurned": 3,
+      "Duration": 6,
+      "Type": "Cardio",
+      "DatePerformed": "2024-09-16T10:56:08.763Z",
+      "UserId": {
+        "id": "1",
+        "name": "NSHUTI Kenny Herve",
+        "phone": "0784667709"
+      }
+    },
+    {
+      "id": "5",
+      "CaloriesBurned": 0,
+      "Duration": 1,
+      "Type": "Strength",
+      "DatePerformed": "2024-09-16T17:18:08.147Z",
+      "UserId": {
+        "id": "2",
+        "phone": "0784667700",
+        "name": "Charles Hategekimana"
+      }
+    },
+    {
+      "id": "6",
+      "CaloriesBurned": 5,
+      "Duration": 5,
+      "Type": "Strength",
+      "DatePerformed": "2024-09-16T17:19:23.154Z",
+      "UserId": {
+        "id": "5",
+        "phone": "0784667701",
+        "name": "RUZINDANA Kenny"
+      }
     }
   ]
-  
 }
