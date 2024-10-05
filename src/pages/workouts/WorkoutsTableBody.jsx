@@ -12,7 +12,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const WorkoutsTableBody = ({
   workouts,
-  statuss,
+  users,
+  status,
   handleClick,
   handleDeleteClick,
   anchorEl,
@@ -21,9 +22,20 @@ const WorkoutsTableBody = ({
 }) => {
   const [clickedWorkoutId, setClickedWorkoutId] = useState(null);
 
+  const getUserInfo = (userId) => {
+    const user = users.find((u) => u.id === userId);
+    return user
+      ? { name: user.name, phone: user.phone }
+      : { name: 'Unknown', phone: 'Unknown' };
+  };
+
+  const sortedWorkouts = workouts.sort(
+    (a, b) => new Date(b.DatePerformed) - new Date(a.DatePerformed)
+  );
+
   return (
     <TableBody>
-      {statuss === 'loading' ? (
+      {status === 'loading' ? (
         <TableRow>
           <TableCell
             colSpan={8}
@@ -32,7 +44,7 @@ const WorkoutsTableBody = ({
             Loading...
           </TableCell>
         </TableRow>
-      ) : statuss === 'error' ? (
+      ) : status === 'error' ? (
         <TableRow>
           <TableCell
             colSpan={8}
@@ -51,12 +63,13 @@ const WorkoutsTableBody = ({
           </TableCell>
         </TableRow>
       ) : (
-        workouts.map((workout) => {
+        sortedWorkouts.map((workout, index) => {
+          const userInfo = getUserInfo(workout.UserId);
           return (
-            <TableRow key={workout.id}>
-              <TableCell>{workout.id}</TableCell>
-              <TableCell>{workout.UserId.name}</TableCell>
-              <TableCell>{workout.UserId.phone}</TableCell>
+            <TableRow key={index}>
+              <TableCell>{index + 1}</TableCell>
+              <TableCell>{userInfo.name}</TableCell>
+              <TableCell>{userInfo.phone}</TableCell>
               <TableCell>{workout.Type}</TableCell>
               <TableCell>{workout.Duration}</TableCell>
               <TableCell>{workout.CaloriesBurned}</TableCell>
@@ -97,7 +110,8 @@ const WorkoutsTableBody = ({
 
 WorkoutsTableBody.propTypes = {
   workouts: PropTypes.array.isRequired,
-  statuss: PropTypes.oneOf(['idle', 'loading', 'error', 'success']).isRequired,
+  users: PropTypes.array.isRequired,
+  status: PropTypes.oneOf(['idle', 'loading', 'error', 'success']).isRequired,
   handleClick: PropTypes.func.isRequired,
   handleEditClick: PropTypes.func.isRequired,
   handleDeleteClick: PropTypes.func.isRequired,

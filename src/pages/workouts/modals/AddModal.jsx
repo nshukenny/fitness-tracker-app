@@ -17,183 +17,157 @@ import {
   Select,
   InputLabel,
 } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const AddModal = ({ open, onClose, onAddWorkout, users, workoutTypes }) => {
   const {
     register,
     handleSubmit,
     reset,
-    setValue,
     formState: { errors, isValid },
   } = useForm({
     resolver: yupResolver(registerSchema),
+    defaultValues: {
+      Type: workoutTypes[0],
+    },
   });
 
   const [selectedUser, setSelectedUser] = useState('');
-  const [userPhone, setUserPhone] = useState('');
-
-  useEffect(() => {
-    if (selectedUser) {
-      const user = users.find((user) => user.id === selectedUser);
-      if (user) {
-        setUserPhone(user.phone);
-        setValue('phone', user.phone);
-      }
-    }
-  }, [selectedUser, users, setValue]);
+  const [selectedType, setSelectedType] = useState(workoutTypes[0]);
 
   const formSubmitHandler = (data) => {
     if (isValid) {
-      const currentDate = new Date().toISOString(); // Get current date in ISO format
+      const currentDate = new Date().toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+      });
       const workoutData = {
         ...data,
-        DatePerformed: currentDate, // Add current date to workout data
+        UserId: selectedUser,
+        DatePerformed: currentDate,
       };
       onAddWorkout(workoutData);
       reset();
       setSelectedUser('');
-      setUserPhone('');
+      setSelectedType(workoutTypes[0]);
+      onClose();
     }
   };
 
-  const handleUserChange = (event) => {
-    setSelectedUser(event.target.value);
-  };
-
   return (
-    <Box>
-      <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-        <DialogTitle>Add Workout</DialogTitle>
-        <DialogContent>
-          <form onSubmit={handleSubmit(formSubmitHandler)}>
-            <FormGroup>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Stack spacing={1} sx={{ mt: 2 }}>
-                    <InputLabel htmlFor="username">User Name</InputLabel>
-                    <Select
-                      {...register('name')}
-                      label="User Name"
-                      name="name"
-                      fullWidth
-                      value={selectedUser}
-                      onChange={handleUserChange}
-                      sx={{ marginBottom: '16px' }}
-                    >
-                      {users.map((user) => (
-                        <MenuItem key={user.id} value={user.id}>
-                          {user.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    {errors.name && (
-                      <Typography variant="body2" color="error">
-                        {errors.name.message}
-                      </Typography>
-                    )}
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Stack spacing={1} sx={{ mt: 2 }}>
-                    <InputLabel htmlFor="userphone">User Phone</InputLabel>
-                    <TextField
-                      {...register('phone')}
-                      label=""
-                      name="user.phone"
-                      fullWidth
-                      value={userPhone}
-                      InputProps={{
-                        readOnly: true,
-                      }}
-                      sx={{ marginBottom: '16px' }}
-                    />
-                    {errors.phone && (
-                      <Typography variant="body2" color="error">
-                        {errors.phone.message}
-                      </Typography>
-                    )}
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Stack spacing={1}>
-                    <InputLabel htmlFor="type">Type</InputLabel>
-                    <Select
-                      {...register('Type')}
-                      label="Type"
-                      name="Type"
-                      fullWidth
-                      sx={{ marginBottom: '16px' }}
-                    >
-                      {workoutTypes.map((Type) => (
-                        <MenuItem key={Type} value={Type}>
-                          {Type}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    {errors.Type && (
-                      <Typography variant="body2" color="error">
-                        {errors.Type.message}
-                      </Typography>
-                    )}
-                  </Stack>
-                </Grid>
-
-                <Grid item xs={12} sm={6}>
-                  <Stack spacing={1}>
-                    <InputLabel htmlFor="">Duration</InputLabel>
-                    <TextField
-                      {...register('Duration')}
-                      label="Duration (minutes)"
-                      name="Duration"
-                      type="number"
-                      fullWidth
-                      sx={{ marginBottom: '16px' }}
-                    />
-                    {errors.Duration && (
-                      <Typography variant="body2" color="error">
-                        {errors.Duration.message}
-                      </Typography>
-                    )}
-                  </Stack>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Stack spacing={1}>
-                    <InputLabel htmlFor="type">Calories Burned</InputLabel>
-                    <TextField
-                      {...register('CaloriesBurned')}
-                      label=""
-                      name="CaloriesBurned"
-                      type="number"
-                      fullWidth
-                      sx={{ marginBottom: '16px' }}
-                    />
-                    {errors.CaloriesBurned && (
-                      <Typography variant="body2" color="error">
-                        {errors.CaloriesBurned.message}
-                      </Typography>
-                    )}
-                  </Stack>
-                </Grid>
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogTitle>Add Workout</DialogTitle>
+      <DialogContent>
+        <form onSubmit={handleSubmit(formSubmitHandler)}>
+          <FormGroup>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <Stack spacing={1} sx={{ mt: 2 }}>
+                  <InputLabel htmlFor="UserId">User Name</InputLabel>
+                  <Select
+                    {...register('UserId')}
+                    label="User Name"
+                    name="UserId"
+                    fullWidth
+                    value={selectedUser}
+                    onChange={(e) => setSelectedUser(e.target.value)}
+                    sx={{ marginBottom: '16px' }}
+                  >
+                    {users.map((user) => (
+                      <MenuItem key={user.id} value={user.id}>
+                        {user.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {errors.UserId && (
+                    <Typography variant="body2" color="error">
+                      {errors.UserId.message}
+                    </Typography>
+                  )}
+                </Stack>
               </Grid>
-            </FormGroup>
-            <Box mt={4} display="flex" justifyContent="flex-end">
-              <Button
-                onClick={onClose}
-                variant="outlined"
-                color="secondary"
-                sx={{ marginRight: '16px' }}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" variant="contained" color="primary">
-                Save
-              </Button>
-            </Box>
-          </form>
-        </DialogContent>
-      </Dialog>
-    </Box>
+              <Grid item xs={12} sm={6}>
+                <Stack spacing={1} sx={{ mt: 2 }}>
+                  <InputLabel htmlFor="Type">Workout Type</InputLabel>
+                  <Select
+                    value={selectedType}
+                    onChange={(e) => setSelectedType(e.target.value)}
+                    {...register('Type')}
+                    label="Type"
+                    name="Type"
+                    fullWidth
+                    sx={{ marginBottom: '16px' }}
+                  >
+                    {workoutTypes.map((type) => (
+                      <MenuItem key={type} value={type}>
+                        {type}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  {errors.Type && (
+                    <Typography variant="body2" color="error">
+                      {errors.Type.message}
+                    </Typography>
+                  )}
+                </Stack>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Stack spacing={1}>
+                  <InputLabel htmlFor="Duration">Duration</InputLabel>
+                  <TextField
+                    {...register('Duration')}
+                    label="Duration (minutes)"
+                    name="Duration"
+                    type="number"
+                    fullWidth
+                    sx={{ marginBottom: '16px' }}
+                  />
+                  {errors.Duration && (
+                    <Typography variant="body2" color="error">
+                      {errors.Duration.message}
+                    </Typography>
+                  )}
+                </Stack>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Stack spacing={1}>
+                  <InputLabel htmlFor="CaloriesBurned">
+                    Calories Burned
+                  </InputLabel>
+                  <TextField
+                    {...register('CaloriesBurned')}
+                    label="Calories Burned"
+                    name="CaloriesBurned"
+                    type="number"
+                    fullWidth
+                    sx={{ marginBottom: '16px' }}
+                  />
+                  {errors.CaloriesBurned && (
+                    <Typography variant="body2" color="error">
+                      {errors.CaloriesBurned.message}
+                    </Typography>
+                  )}
+                </Stack>
+              </Grid>
+            </Grid>
+          </FormGroup>
+          <Box mt={4} display="flex" justifyContent="flex-end">
+            <Button
+              onClick={onClose}
+              variant="outlined"
+              color="secondary"
+              sx={{ marginRight: '16px' }}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" variant="contained" color="primary">
+              Save
+            </Button>
+          </Box>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };
 
@@ -201,8 +175,8 @@ AddModal.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   onAddWorkout: PropTypes.func.isRequired,
-  users: PropTypes.array.isRequired, // Prop for users list
-  workoutTypes: PropTypes.array.isRequired, // Prop for workout types
+  users: PropTypes.array.isRequired,
+  workoutTypes: PropTypes.array.isRequired,
 };
 
 export default AddModal;

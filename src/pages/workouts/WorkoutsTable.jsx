@@ -99,22 +99,25 @@ const WorkoutsTable = () => {
 
   const handleAddWorkout = async (workoutData) => {
     try {
-      const maxId = Math.max(...workouts.map((workout) => workout.id));
+      const maxId = Math.max(...workouts.map((workout) => workout.id), 0);
       const newWorkoutId = (maxId + 1).toString();
-      workoutData.id = newWorkoutId;
-      const user = users.find((user) => user.phone === workoutData.phone);
-      if (user) {
-        workoutData.UserId = {
-          id: user.id,
-          phone: user.phone,
-          name: user.name,
-        };
-      } else {
+
+      const user = users.find((user) => user.id === workoutData.UserId);
+
+      if (!user) {
         throw new Error('User not found');
       }
-      delete workoutData.phone;
-      delete workoutData.name;
-      await dispatch(createWorkout(workoutData));
+
+      const newWorkout = {
+        id: newWorkoutId,
+        UserId: workoutData.UserId,
+        Type: workoutData.Type,
+        Duration: parseInt(workoutData.Duration),
+        CaloriesBurned: parseInt(workoutData.CaloriesBurned),
+        DatePerformed: workoutData.DatePerformed,
+      };
+
+      await dispatch(createWorkout(newWorkout));
       showToast({
         message: 'Workout added successfully.',
         title: 'Workout',
@@ -124,6 +127,11 @@ const WorkoutsTable = () => {
       dispatch(getWorkouts());
     } catch (error) {
       console.error('Error adding workout:', error);
+      showToast({
+        message: 'Error adding workout.',
+        title: 'Workout',
+        type: 'error',
+      });
     }
   };
 
@@ -131,12 +139,11 @@ const WorkoutsTable = () => {
   const handleSearchChange = (event) => setSearchQuery(event.target.value);
 
   const filteredWorkouts = useMemo(() => {
-    return workouts.filter((workout) =>
-      Object.values(workout).some((value) =>
-        value.toString().toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    );
-  }, [workouts, searchQuery]);
+    return workouts.filter((workout) => {
+      const user = users.find((user) => user.id === workout.UserId);
+      return user?.name.toLowerCase().includes(searchQuery.toLowerCase());
+    });
+  }, [workouts, users, searchQuery]);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -176,19 +183,20 @@ const WorkoutsTable = () => {
                   <table style={{ width: '100%' }}>
                     <TableHead>
                       <TableRow>
-                        <TableCell>ID</TableCell>
+                        <TableCell>No</TableCell>
                         <TableCell>User Name</TableCell>
-                        <TableCell>User phone</TableCell>
+                        <TableCell>User Phone</TableCell>
                         <TableCell>Type</TableCell>
                         <TableCell>Duration</TableCell>
                         <TableCell>Calories Burned</TableCell>
                         <TableCell>Date Performed</TableCell>
+                        <TableCell>Actions</TableCell>
                       </TableRow>
                     </TableHead>
                     <WorkoutsTableBody
                       workouts={currentItems}
-                      users={users} // Pass users list
-                      statuss={status}
+                      users={users}
+                      status={status}
                       handleClick={handleClick}
                       handleEditClick={handleEditClick}
                       handleDeleteClick={handleDeleteClick}
@@ -223,15 +231,15 @@ const WorkoutsTable = () => {
         open={openEditModal}
         onClose={() => setOpenEditModal(false)}
         workoutData={selectedWorkoutData}
-        workoutTypes={workoutTypes} // Pass workout types
-        users={users} // Pass users
+        workoutTypes={workoutTypes}
+        users={users}
       />
       <AddModal
         open={openAddModal}
         onClose={handleCloseAddModal}
         onAddWorkout={handleAddWorkout}
-        users={users} // Pass the users to the AddModal
-        workoutTypes={workoutTypes} // Pass the workout types to the AddModal
+        users={users}
+        workoutTypes={workoutTypes}
       />
     </>
   );

@@ -1,16 +1,10 @@
 import * as yup from 'yup';
 
 export const registerSchema = yup.object().shape({
-  name: yup
-    .string('User Name should be a string')
-    .required('User Name is required'),
-  phone: yup
-    .string('Phone should be a string')
-    .matches(
-      /^(078|072|073)\d{7}$/,
-      'Phone number must start with 078, 072, or 073 followed by 7 digits'
-    )
-    .required('Phone number is required'),
+  UserId: yup
+    .string('UserId should be a string')
+    .required('UserId is required'),
+
   Type: yup
     .string('Type should be a string')
     .oneOf(
