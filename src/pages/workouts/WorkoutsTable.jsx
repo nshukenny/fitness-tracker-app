@@ -28,6 +28,7 @@ import EditModal from './modals/EditModal.jsx';
 import AddModal from './modals/AddModal.jsx';
 import WorkoutsTableBody from './WorkoutsTableBody.jsx';
 import { showToast } from '../../helpers/toast.js';
+import { toast } from 'react-toastify';
 
 const WorkoutsTable = () => {
   const dispatch = useDispatch();
@@ -93,7 +94,7 @@ const WorkoutsTable = () => {
       setOpenDeleteConfirmation(false);
       dispatch(getWorkouts());
     } catch (error) {
-      console.error('Error deleting workout:', error);
+      toast.error(`Error: ${error.message}`);
     }
   };
 
@@ -126,7 +127,7 @@ const WorkoutsTable = () => {
       setOpenAddModal(false);
       dispatch(getWorkouts());
     } catch (error) {
-      console.error('Error adding workout:', error);
+      toast.error(`Error: ${error.message}`);
       showToast({
         message: 'Error adding workout.',
         title: 'Workout',

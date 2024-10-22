@@ -14,10 +14,10 @@ export const registerSchema = yup.object().shape({
     .required('Type is required'),
   Duration: yup
     .number('Duration should be a number')
-    .min(1, 'Duration should be at least 1 minute')
+    .min(10, 'Duration should be at least 10 minutes')
     .required('Duration is required'),
   CaloriesBurned: yup
     .number('Calories Burned should be a number')
-    .min(0, 'Calories Burned should be at least 0')
+    .min(10, 'Calories Burned should be at least 10')
     .required('Calories Burned is required'),
 });

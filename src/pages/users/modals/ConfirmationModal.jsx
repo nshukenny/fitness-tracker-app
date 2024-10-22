@@ -11,7 +11,9 @@ const ConfirmationModal = ({ open, onClose, onConfirm }) => {
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Confirm Delete</DialogTitle>
-      <DialogContent>Are you sure you want to delete this user?</DialogContent>
+      <DialogContent>
+        Are you sure you want to delete this workout?
+      </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
         <Button onClick={onConfirm} color="error">

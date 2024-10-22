@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { showToast } from '../../../helpers/toast';
+import { toast } from 'react-toastify';
 import {
   Button,
   Dialog,
@@ -62,7 +63,7 @@ const EditModal = ({ open, onClose, workoutData, users, workoutTypes }) => {
           onClose();
         })
         .catch((error) => {
-          console.error('Error updating Workout:', error);
+          toast.error(`Error: ${error.message}`);
           showToast({
             message: 'Failed to update workout.',
             title: 'Error',
