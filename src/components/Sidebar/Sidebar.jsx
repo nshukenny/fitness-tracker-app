@@ -25,7 +25,7 @@ const menuItems = [
   {
     text: 'Work Sessions',
     icon: <ComputerIcon sx={{ color: '#2196f3' }} />,
-    // link: '/dashboard/work-sessions',
+    link: '/dashboard/workouts',
   },
 ];
 

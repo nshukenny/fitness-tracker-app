@@ -12,7 +12,7 @@
     },
     {
       "id": "2",
-      "phone": "0784667709",
+      "phone": "0784667700",
       "height": 66,
       "weight": 67,
       "age": 68,
@@ -22,24 +22,30 @@
     },
     {
       "id": "5",
-      "phone": "0784667709",
+      "phone": "0784667701",
       "height": 55,
       "weight": 55,
       "age": 55,
       "email": "kwizera@gmail.com",
-      "name": "NSHUTI Kenny Herve"
+      "name": "RUZINDANA Kenny"
     }
   ],
   "workouts": [
     {
-      "id": "1",
-      "text": "a comment about post 1",
-      "postId": "1"
+      "id": "2",
+      "Type": "Strength",
+      "Duration": 46,
+      "CaloriesBurned": 350,
+      "UserId": "2",
+      "DatePerformed": "29/08/2024"
     },
     {
-      "id": "2",
-      "text": "another comment about post 1",
-      "postId": "1"
+      "id": "3",
+      "UserId": "5",
+      "Type": "Cardio",
+      "Duration": 55,
+      "CaloriesBurned": 55,
+      "DatePerformed": "05/10/2024"
     }
   ]
 }
