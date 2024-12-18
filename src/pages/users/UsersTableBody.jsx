@@ -9,6 +9,7 @@ import {
   MenuItem,
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useNavigate } from 'react-router-dom';
 
 const UsersTableBody = ({
   users,
@@ -19,7 +20,9 @@ const UsersTableBody = ({
   handleClose,
   handleEditClick,
 }) => {
+  const navigate = useNavigate();
   const [clickedUserId, setClickedUserId] = useState(null);
+
   return (
     <TableBody>
       {statuss === 'loading' ? (
@@ -63,7 +66,7 @@ const UsersTableBody = ({
               <IconButton
                 onClick={(event) => {
                   handleClick(event, user.id);
-                  setClickedUserId(user.id); // Store the clicked user ID
+                  setClickedUserId(user.id);
                 }}
               >
                 <MoreVertIcon />
@@ -80,6 +83,9 @@ const UsersTableBody = ({
                 </MenuItem>
                 <MenuItem onClick={(event) => handleDeleteClick(event)}>
                   Delete
+                </MenuItem>
+                <MenuItem onClick={() => navigate(`/users/${clickedUserId}`)}>
+                  User Details
                 </MenuItem>
               </Menu>
             </TableCell>
