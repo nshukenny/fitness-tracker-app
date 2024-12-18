@@ -26,7 +26,7 @@ const UserDetailsPage = () => {
 
   const users = useSelector(selectAllUsers).data;
 
-  const user = users.find((user) => user.id === id);
+  const [selectedUser] = useState(() => users.find((user) => user.id === id));
 
   const handleOpenEditModal = () => {
     setIsEditModalOpen(true);
@@ -36,7 +36,7 @@ const UserDetailsPage = () => {
     setIsEditModalOpen(false);
   };
 
-  if (!user) {
+  if (!selectedUser) {
     return (
       <div style={{ padding: '20px', textAlign: 'center' }}>
         <Typography variant="h5" color="error">
@@ -45,7 +45,7 @@ const UserDetailsPage = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate('/dashboard/users')}
         >
           Go Back
         </Button>
@@ -108,7 +108,7 @@ const UserDetailsPage = () => {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => navigate(-1)}
+                    onClick={() => navigate('/dashboard/users')}
                   >
                     Back
                   </Button>
@@ -135,19 +135,13 @@ const UserDetailsPage = () => {
                         fontSize: '48px',
                       }}
                     >
-                      {user.name.charAt(0)}
+                      {selectedUser.name.charAt(0).toUpperCase()}
                     </Avatar>
                     <Typography
                       variant="h5"
                       style={{ marginTop: '10px', fontWeight: 'bold' }}
                     >
-                      {user.name}
-                    </Typography>
-                    <Typography variant="body1" color="textSecondary">
-                      {user.role || 'Developer'}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                      {user.location || 'Kigali - Rwanda'}
+                      {selectedUser.name}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -170,25 +164,25 @@ const UserDetailsPage = () => {
                           >
                             Full Name
                           </TableCell>
-                          <TableCell>{user.name}</TableCell>
+                          <TableCell>{selectedUser.name}</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell style={{ fontWeight: 'bold' }}>
                             Email
                           </TableCell>
-                          <TableCell>{user.email}</TableCell>
+                          <TableCell>{selectedUser.email}</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell style={{ fontWeight: 'bold' }}>
                             Age
                           </TableCell>
-                          <TableCell>{user.age}</TableCell>
+                          <TableCell>{selectedUser.age}</TableCell>
                         </TableRow>
                         <TableRow>
                           <TableCell style={{ fontWeight: 'bold' }}>
                             Phone
                           </TableCell>
-                          <TableCell>{user.phone}</TableCell>
+                          <TableCell>{selectedUser.phone}</TableCell>
                         </TableRow>
                       </TableBody>
                     </Table>
@@ -208,7 +202,7 @@ const UserDetailsPage = () => {
             <EditModal
               open={isEditModalOpen}
               onClose={handleCloseEditModal}
-              userData={user}
+              userData={selectedUser}
             />
           </div>
         </div>

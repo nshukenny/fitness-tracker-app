@@ -52,8 +52,7 @@ const EditModal = ({ open, onClose, userData }) => {
           dispatch(getUsers());
           onClose();
         })
-        .catch((error) => {
-          console.error('Error updating user:', error);
+        .catch(() => {
           showToast({
             message: 'Failed to update user.',
             title: 'Error',
