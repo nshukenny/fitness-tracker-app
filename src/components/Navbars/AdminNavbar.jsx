@@ -12,7 +12,6 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 
 import SearchIcon from '@mui/icons-material/Search';
-import TextField from '@mui/material/TextField';
 
 function AdminNavbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -90,17 +89,6 @@ function AdminNavbar() {
           <Box sx={{ flexGrow: 1 }} />
 
           {/* Add the search bar here */}
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 2 }}>
-            <TextField
-              variant="outlined"
-              size="small"
-              placeholder="Search"
-              InputProps={{
-                startAdornment: <SearchIcon />,
-                sx: { borderRadius: '20px' }, // Style to make it round
-              }}
-            />
-          </Box>
 
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Tooltip title="Kenny Herve & Settings">
