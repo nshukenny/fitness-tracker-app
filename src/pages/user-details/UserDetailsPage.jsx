@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import {
@@ -26,7 +26,10 @@ const UserDetailsPage = () => {
 
   const users = useSelector(selectAllUsers).data;
 
-  const [selectedUser] = useState(() => users.find((user) => user.id === id));
+  const selectedUser = useMemo(
+    () => users.find((user) => user.id === id),
+    [users, id]
+  );
 
   const handleOpenEditModal = () => {
     setIsEditModalOpen(true);
@@ -95,7 +98,10 @@ const UserDetailsPage = () => {
                   }}
                 >
                   <div>
-                    <Typography variant="h4" style={{ color: '#3f51b5' }}>
+                    <Typography
+                      variant="h4"
+                      style={{ color: '#3f51b5', fontWeight: 'bold' }}
+                    >
                       User Profile Details
                     </Typography>
                     <Typography
@@ -139,7 +145,11 @@ const UserDetailsPage = () => {
                     </Avatar>
                     <Typography
                       variant="h5"
-                      style={{ marginTop: '10px', fontWeight: 'bold' }}
+                      style={{
+                        marginTop: '10px',
+                        fontWeight: 'bold',
+                        color: '#3f51b5',
+                      }}
                     >
                       {selectedUser.name}
                     </Typography>

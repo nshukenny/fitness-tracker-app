@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { registerSchema } from '../../../schema/formSchema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import PropTypes from 'prop-types';
@@ -21,6 +22,7 @@ import { getUsers, updateUser } from '../../../store/users/thunks';
 
 const EditModal = ({ open, onClose, userData }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // Add this line
   const handleClose = () => {
     onClose();
   };
@@ -51,6 +53,7 @@ const EditModal = ({ open, onClose, userData }) => {
           });
           dispatch(getUsers());
           onClose();
+          navigate(`/users/${userId}`);
         })
         .catch(() => {
           showToast({
