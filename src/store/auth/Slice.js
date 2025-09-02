@@ -39,7 +39,6 @@ const authSlice = createSlice({
       localStorage.removeItem('FITNESS_TRACKER_APP_ADMIN_TOKEN');
       state.username = null;
 
-      // Redirect to login
       window.location.href = '/';
     },
   },

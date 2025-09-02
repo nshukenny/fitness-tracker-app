@@ -1,129 +1,65 @@
-import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-
 import Tooltip from '@mui/material/Tooltip';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import Button from '@mui/material/Button';
+import PropTypes from 'prop-types';
 
-import SearchIcon from '@mui/icons-material/Search';
-import TextField from '@mui/material/TextField';
-
-function AdminNavbar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
+function AdminNavbar({ onLogout }) {
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
+    <AppBar
+      position="fixed"
+      elevation={1}
+      sx={{
+        backgroundColor: '#ffffff',
+        color: 'text.primary',
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+      }}
+    >
+      <Toolbar sx={{ px: 3 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
+            component="div"
+            sx={{ fontWeight: 'bold', letterSpacing: '.05rem' }}
           >
-            LOGO
+            Fitness Tracker
           </Typography>
+        </Box>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
-              {/* Removed pages map */}
-            </Menu>
-          </Box>
-          <IconButton
-            size="large"
-            aria-label="search"
-            color="inherit"
-            sx={{ display: { xs: 'flex', md: 'none' }, mr: 2 }}
-          >
-            <SearchIcon />
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <IconButton color="inherit">
+            <NotificationsIcon />
           </IconButton>
-          <Box sx={{ flexGrow: 1 }} />
 
-          {/* Add the search bar here */}
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, mr: 2 }}>
-            <TextField
-              variant="outlined"
-              size="small"
-              placeholder="Search"
-              InputProps={{
-                startAdornment: <SearchIcon />,
-                sx: { borderRadius: '20px' }, // Style to make it round
-              }}
-            />
-          </Box>
+          <Tooltip title="Kenny Herve">
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Avatar alt="Kenny Herve" src="/static/images/avatar/2.jpg" />
+              <Typography variant="body2" fontWeight="500">
+                Kenny Herve
+              </Typography>
+            </Box>
+          </Tooltip>
 
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Tooltip title="Kenny Herve & Settings">
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  cursor: 'pointer',
-                }}
-              >
-                <IconButton sx={{ p: 0 }}>
-                  <Avatar alt="Kenny Herve" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-                <Typography variant="body1" sx={{ ml: 1 }}>
-                  Kenny Herve
-                </Typography>
-              </Box>
-            </Tooltip>
-          </Box>
-        </Toolbar>
-      </Container>
+          <Button
+            variant="contained"
+            color="error"
+            onClick={onLogout}
+            sx={{ textTransform: 'none', borderRadius: 2, px: 2 }}
+          >
+            Logout
+          </Button>
+        </Box>
+      </Toolbar>
     </AppBar>
   );
 }
-
+AdminNavbar.propTypes = {
+  onLogout: PropTypes.func.isRequired,
+};
 export default AdminNavbar;

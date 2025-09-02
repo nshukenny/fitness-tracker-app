@@ -2,11 +2,10 @@
   "users": [
     {
       "id": "1",
-      "name": "NSHUTI Kenny Herve",
-      "age": 25,
+      "name": "NSHUTI Kenny ",
+      "age": 27,
       "weight": 65,
       "height": 50,
-      "location": "Kigali",
       "phone": "0784667709",
       "email": "nshukenny@gmail.com"
     },
@@ -17,8 +16,7 @@
       "weight": 67,
       "age": 68,
       "email": "kwimenyi@gmail.com",
-      "name": "Charles Hategekimana",
-      "location": "Kigali"
+      "name": "Charles Hategekimana"
     },
     {
       "id": "5",
