@@ -11,7 +11,7 @@ const UsersPage = () => {
       <Box style={{ marginLeft: '220px' }}>
         <AdminNavbar />
         {/* <Header /> */}
-        <Box style={{ marginTop: '20px' }}>
+        <Box style={{ marginTop: '100px' }}>
           <UserTable />
         </Box>
       </Box>

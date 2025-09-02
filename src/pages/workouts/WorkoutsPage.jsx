@@ -9,7 +9,7 @@ const WorkoutsPage = () => {
       <Sidebar style={{ width: '250px' }} />
       <Box style={{ marginLeft: '220px' }}>
         <AdminNavbar />
-        <Box style={{ marginTop: '20px' }}>
+        <Box style={{ marginTop: '100px' }}>
           <WorkoutsTable />
         </Box>
       </Box>

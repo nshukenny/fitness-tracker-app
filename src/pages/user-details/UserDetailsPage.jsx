@@ -81,7 +81,7 @@ const UserDetailsPage = () => {
         >
           <AdminNavbar />
 
-          <div style={{ padding: '20px' }}>
+          <div style={{ padding: '80px' }}>
             <Grid
               container
               spacing={3}
